@@ -25,14 +25,14 @@ urlpatterns = [
         name="cycles",
     ),
     path(
-        "workspaces/<str:slug>/projects/<uuid:project_id>/cycles/<uuid:cycle_id>/cycle-issues/",
+        "workspaces/<str:slug>/projects/<uuid:project_id>/cycles/<uuid:cycle_id>/work-items/",
         CycleIssueListCreateAPIEndpoint.as_view(http_method_names=["get", "post"]),
-        name="cycle-issues",
+        name="cycle-work-items",
     ),
     path(
-        "workspaces/<str:slug>/projects/<uuid:project_id>/cycles/<uuid:cycle_id>/cycle-issues/<uuid:issue_id>/",
+        "workspaces/<str:slug>/projects/<uuid:project_id>/cycles/<uuid:cycle_id>/work-items/<uuid:issue_id>/",
         CycleIssueDetailAPIEndpoint.as_view(http_method_names=["get", "delete"]),
-        name="cycle-issues",
+        name="cycle-work-items-detail",
     ),
     path(
         "workspaces/<str:slug>/projects/<uuid:project_id>/cycles/<uuid:cycle_id>/transfer-issues/",
