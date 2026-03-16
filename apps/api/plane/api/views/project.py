@@ -121,6 +121,12 @@ class ProjectListCreateAPIEndpoint(BaseAPIView):
                 .values("count")
             )
             .annotate(
+                total_issues=Issue.objects.filter(project_id=OuterRef("id"))
+                .order_by()
+                .annotate(count=Func(F("id"), function="Count"))
+                .values("count")
+            )
+            .annotate(
                 member_role=ProjectMember.objects.filter(
                     project_id=OuterRef("pk"),
                     member_id=self.request.user.id,
@@ -331,6 +337,12 @@ class ProjectDetailAPIEndpoint(BaseAPIView):
             )
             .annotate(
                 total_modules=Module.objects.filter(project_id=OuterRef("id"))
+                .order_by()
+                .annotate(count=Func(F("id"), function="Count"))
+                .values("count")
+            )
+            .annotate(
+                total_issues=Issue.objects.filter(project_id=OuterRef("id"))
                 .order_by()
                 .annotate(count=Func(F("id"), function="Count"))
                 .values("count")
