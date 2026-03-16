@@ -23,6 +23,7 @@ services:
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
       RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST}
 
+  # Setup plane-minio
   plane-minio:
     image: minio/minio
     restart: unless-stopped
