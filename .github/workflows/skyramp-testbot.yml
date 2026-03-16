@@ -181,6 +181,8 @@ jobs:
 
       - name: Run Skyramp Testbot
         uses: skyramp/testbot@SKYR-3625
+        env:
+          SKYRAMP_TEST_TOKEN: ${{ env.GHOST_ADMIN_TOKEN }}
         with:
           skyramp_mcp_version: next
           skyramp_license_file: ${{ secrets.SKYRAMP_LICENSE_FILE }}
