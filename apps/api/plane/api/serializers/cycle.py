@@ -118,6 +118,15 @@ class CycleSerializer(BaseSerializer):
     and time-bound iteration data for project management and sprint planning.
     """
 
+    overdue_issues = serializers.SerializerMethodField()
+
+    def get_overdue_issues(self, obj):
+        from django.utils import timezone
+        return obj.issue_cycle.filter(
+            issue__due_date__lt=timezone.now().date(),
+            issue__completed_at__isnull=True
+        ).count()
+
     total_issues = serializers.IntegerField(read_only=True)
     cancelled_issues = serializers.IntegerField(read_only=True)
     completed_issues = serializers.IntegerField(read_only=True)
