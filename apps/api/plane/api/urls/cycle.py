@@ -41,11 +41,6 @@ urlpatterns = [
         name="cycle-issues",
     ),
     path(
-        "workspaces/<str:slug>/projects/<uuid:project_id>/cycles/<uuid:cycle_id>/transfer-issues/",
-        TransferCycleIssueAPIEndpoint.as_view(http_method_names=["post"]),
-        name="transfer-issues",
-    ),
-    path(
         "workspaces/<str:slug>/projects/<uuid:project_id>/cycles/<uuid:cycle_id>/archive/",
         CycleArchiveUnarchiveAPIEndpoint.as_view(http_method_names=["post"]),
         name="cycle-archive-unarchive",
