@@ -21,7 +21,9 @@ on:
       - 'pnpm-lock.yaml'
       - 'package.json'
       - 'docker-compose.yml'
-      - 'docker-compose.yaml'
+      - 'docker-compose-local.yml'
+      - '.env.example'
+      - 'docs/**'
   workflow_dispatch:
     inputs:
       pr_number:
