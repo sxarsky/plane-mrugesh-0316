@@ -6,8 +6,8 @@ metadata:
   schemaVersion: v1
   mcpVersion: 0.0.59
   executorVersion: v1.3.12
-  createdAt: "2026-03-16T17:22:01.675Z"
-  updatedAt: "2026-03-16T17:22:01.679Z"
+  createdAt: "2026-03-16T18:24:02.726Z"
+  updatedAt: "2026-03-16T18:24:02.728Z"
 services:
   - serviceName: plane-api
     language: python
@@ -16,9 +16,9 @@ services:
     api:
       schemaPath: http://localhost:8000/api/schema/
       authType: apiKey
-      authHeader: X-API-Key
+      authHeader: X-Api-Key
       baseUrl: http://localhost:8000
     runtimeDetails:
-      serverStartCommand: docker compose up -d plane-db plane-redis migrator api worker
+      serverStartCommand: docker compose up -d plane-db plane-redis plane-mq plane-minio migrator api worker
       runtime: docker
       dockerNetwork: plane_default

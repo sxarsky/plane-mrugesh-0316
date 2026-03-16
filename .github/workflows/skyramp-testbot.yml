@@ -137,6 +137,20 @@ jobs:
           python manage.py clear_cache || true
           python manage.py collectstatic --noinput
 
+      - name: Create CI test user and API token
+        working-directory: apps/api
+        run: |
+          API_TOKEN=$(python manage.py shell -c "
+          from plane.db.models import User
+          from plane.db.models.api import APIToken
+          user = User.objects.create(email='ci@plane.so', first_name='CI', last_name='Test')
+          user.set_password('ci-password-$(date +%s)')
+          user.save()
+          token = APIToken.objects.create(user=user, label='CI Test Token')
+          print(token.token)
+          ")
+          echo "SKYRAMP_TEST_TOKEN=$API_TOKEN" >> "$GITHUB_ENV"
+
       - name: Start Plane API server
         working-directory: apps/api
         run: |
