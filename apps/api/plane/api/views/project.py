@@ -666,13 +666,6 @@ class ProjectSummaryAPIEndpoint(BaseAPIView):
                 .annotate(count=Count("*"))
                 .values("count")
             ),
-            "open_issues": lambda: (
-                Issue.objects.filter(project_id=OuterRef("pk"))
-                .exclude(state__group__in=[StateGroup.COMPLETED.value, StateGroup.CANCELLED.value])
-                .values("project_id")
-                .annotate(count=Count("*"))
-                .values("count")
-            ),  # NEW field
         }
 
         # Build annotations dictionary for the requested fields
