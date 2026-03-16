@@ -65,7 +65,7 @@ def test_integration():
     # Execute Request
     cycle_issues_POST_response = client.send_request(
         url=URL,
-        path="/api/v1/workspaces/{slug}/projects/{project_id}/cycles/{cycle_id}/cycle-issues/",
+        path="/api/v1/workspaces/{slug}/projects/{project_id}/cycles/{cycle_id}/work-items/",
         method="POST",
         body=cycle_issues_POST_request_body,
         headers=headers,
@@ -104,7 +104,7 @@ def test_integration():
     # Execute Request
     cycle_issues_GET_response = client.send_request(
         url=URL,
-        path="/api/v1/workspaces/{slug}/projects/{project_id}/cycles/{cycle_id}/cycle-issues/",
+        path="/api/v1/workspaces/{slug}/projects/{project_id}/cycles/{cycle_id}/work-items/",
         method="GET",
         headers=headers,
         path_params={
