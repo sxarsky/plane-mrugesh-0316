@@ -57,6 +57,7 @@ def test_summary_get():
 
     # Generated Assertions
     assert summary_GET_response.status_code == 200
+    assert skyramp.get_response_value(summary_GET_response, "open_issues") is not None
 
     client.remove_all_mocks()
 
