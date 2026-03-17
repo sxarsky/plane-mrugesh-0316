@@ -4,7 +4,7 @@ workspace:
   repoUrl: git@github.com:mrugeshmaster/plane.git
 metadata:
   schemaVersion: v1
-  mcpVersion: 0.0.59
+  mcpVersion: next
   executorVersion: v1.3.12
   createdAt: "2026-03-16T18:24:02.726Z"
   updatedAt: "2026-03-16T18:24:02.728Z"
