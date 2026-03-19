@@ -22,6 +22,8 @@ on:
       - 'package.json'
       - 'docker-compose.yml'
       - 'docker-compose.yaml'
+  issue_comment:
+    types: [created]
   workflow_dispatch:
     inputs:
       pr_number:
@@ -180,12 +182,16 @@ jobs:
       # ── Skyramp Testbot ──────────────────────────────────────────────────────
 
       - name: Run Skyramp Testbot
-        uses: skyramp/testbot@SKYR-3625
+        uses: skyramp/testbot@v0.5.0
         env:
-          SKYRAMP_TEST_TOKEN: ${{ env.GHOST_ADMIN_TOKEN }}
+          SKYRAMP_TEST_TOKEN: ${{ env.SKYRAMP_TEST_TOKEN }}
         with:
           skyramp_mcp_version: next
+          skyramp_executor_version: v1.3.13
           skyramp_license_file: ${{ secrets.SKYRAMP_LICENSE_FILE }}
           anthropic_api_key: ${{ secrets.SKYRAMP_TESTBOT_API_KEY }}
           github_token: ${{ steps.app-token.outputs.token }}
           skip_target_setup: 'true'
+          auto_commit: true
+          post_pr_comment: true
+          enable_debug: true
