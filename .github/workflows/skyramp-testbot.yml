@@ -4,22 +4,68 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
-      # Adding this to test setup only
-      - '.github/workflows/skyramp-testbot.yml'
-      # Plane API (Django)
-      - 'apps/api/**'
-      # Plane frontend apps
-      - 'apps/web/**'
-      - 'apps/admin/**'
-      - 'apps/space/**'
-      - 'apps/live/**'
-      # Shared packages
+      # Common source directories
+      - 'src/**'
+      - 'app/**'
+      - 'lib/**'
+      - 'api/**'
+      - 'server/**'
+      - 'backend/**'
+      - 'frontend/**'
+      - 'web/**'
+      - 'core/**'
+      # Monorepo patterns
       - 'packages/**'
+      - 'apps/**'
+      - 'services/**'
+      # Go conventions
+      - 'cmd/**'
+      - 'pkg/**'
+      - 'internal/**'
+      # Rust workspaces
+      - 'crates/**'
+      # Serverless
+      - 'functions/**'
+      # Frontend framework conventions
+      - 'pages/**'
+      - 'components/**'
+      # Ruby/Rails
+      - 'db/**'
+      - 'config/**'
+      # Common web patterns
+      - 'routes/**'
+      - 'controllers/**'
+      - 'models/**'
+      - 'views/**'
+      - 'handlers/**'
+      - 'middleware/**'
+      # Tests
+      - 'tests/**'
+      - 'test/**'
+      - 'spec/**'
       # Build and dependency files
-      - 'apps/api/requirements*.txt'
-      - 'apps/api/pyproject.toml'
-      - 'pnpm-lock.yaml'
       - 'package.json'
+      - 'package-lock.json'
+      - 'yarn.lock'
+      - 'pnpm-lock.yaml'
+      - 'pyproject.toml'
+      - 'setup.py'
+      - 'setup.cfg'
+      - 'requirements*.txt'
+      - 'Pipfile'
+      - 'poetry.lock'
+      - 'go.mod'
+      - 'go.sum'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - 'pom.xml'
+      - 'build.gradle'
+      - 'build.gradle.kts'
+      - 'Gemfile'
+      - 'Gemfile.lock'
+      - '*.csproj'
+      - '*.sln'
+      - 'Dockerfile'
       - 'docker-compose.yml'
       - 'docker-compose.yaml'
   issue_comment:
@@ -36,15 +82,20 @@ on:
         type: string
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.run_id }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.event.issue.number || github.run_id }}
   cancel-in-progress: true
 
 jobs:
   testbot:
+    # Only run for pull_request events or issue_comment on PRs mentioning @skyramp-testbot
+    if: >-
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request && contains(github.event.comment.body, '@skyramp-testbot'))
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
+      checks: write
 
     services:
       postgres:
@@ -81,7 +132,7 @@ jobs:
           app-id: ${{ secrets.SKYRAMP_TESTBOT_APP_ID }}
           private-key: ${{ secrets.SKYRAMP_TESTBOT_APP_PRIVATE_KEY }}
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
@@ -182,15 +233,15 @@ jobs:
       # ── Skyramp Testbot ──────────────────────────────────────────────────────
 
       - name: Run Skyramp Testbot
-        uses: skyramp/testbot@v0.5.0
+        uses: skyramp/testbot@v0.5.1
         env:
           SKYRAMP_TEST_TOKEN: ${{ env.SKYRAMP_TEST_TOKEN }}
         with:
-          skyramp_mcp_version: next
-          skyramp_executor_version: v1.3.13
           skyramp_license_file: ${{ secrets.SKYRAMP_LICENSE_FILE }}
           anthropic_api_key: ${{ secrets.SKYRAMP_TESTBOT_API_KEY }}
           github_token: ${{ steps.app-token.outputs.token }}
+          skyramp_mcp_version: next
+          skyramp_executor_version: v1.3.13
           skip_target_setup: 'true'
           auto_commit: true
           post_pr_comment: true
